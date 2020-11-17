@@ -1,0 +1,50 @@
+﻿@model IEnumerable<DoubleKPhoneShop.Models.Product>
+
+@{
+    ViewBag.Title = "Test";
+}
+@*<script src="~/Scripts/jquery-1.10.2.js"></script>*@  
+@*<script src="~/Scripts/jquery.unobtrusive-ajax.js"></script>*@ 
+<h2>Test</h2>
+
+<div class="filter price" style="height:2000px">
+    @using (Ajax.BeginForm("Test", "Home", new AjaxOptions { HttpMethod = "POST", UpdateTargetId = "content" , InsertionMode = InsertionMode.Replace  }))
+    {
+        <div class="form-horizontal">
+            <hr />
+            <div class="form-group">
+                <label class="control-label col-md-2">Lọc theo Loại: </label>
+                <select @*onchange = "$(this.form).submit();"*@ id="find" name="find" class="form-control col-md-2">
+                    <option value="Iphone">Iphone</option>
+                    <option value="Samsung">Samsung</option>       
+                </select>
+                <input type="text" name="find" />
+                <div class="col-md-2">
+                    <input type="submit" value="Tìm" class="btn btn-default" />
+                </div>
+            </div>
+        </div>
+    }
+</div>
+
+<section id="content">
+    @Html.Partial("_Product", Model)
+</section>
+
+<script>
+    $(document).ready(function () {
+        $("#find").change(function () {            
+            var a = $("#find").val();
+            alert(a);
+            $("form").submit();
+            var form = $("form");
+            return $.ajax({
+                url: '@Url.Action("Test", "Home")',
+                data: form.serialize(),
+                type: 'POST',                
+            });            
+        }); 
+    });
+</script>
+<script src="~/Scripts/jquery.validate.min.js"></script>  
+<script src="~/Scripts/jquery.validate.unobtrusive.min.js"></script> 
